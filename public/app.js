@@ -24,7 +24,7 @@ const logEl = document.getElementById("log");
 const BASE_SEPOLIA_CHAIN_ID = "0x14a34";
 const EXPLORER_BASE_URL = "https://sepolia.basescan.org";
 const USDC_ADDRESS = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
-const MINT_COST = 10000000n;
+const MINT_COST = 100000n;
 const ERC20_ABI = [
   "function approve(address spender, uint256 amount) external returns (bool)",
   "function allowance(address owner, address spender) external view returns (uint256)",
@@ -165,14 +165,14 @@ function getMintDetails() {
 
 async function refreshAllowance() {
   if (!state.connected || !state.walletAddress) {
-    approveButton.textContent = "Approve 10 USDC";
+    approveButton.textContent = "Approve 0.1 USDC";
     return;
   }
 
   const contractAddress =
     state.deployedAddress || contractAddressInput.value.trim();
   if (!contractAddress || !ethers.isAddress(contractAddress)) {
-    approveButton.textContent = "Approve 10 USDC";
+    approveButton.textContent = "Approve 0.1 USDC";
     return;
   }
 
@@ -189,10 +189,10 @@ async function refreshAllowance() {
     if (allowance >= MINT_COST) {
       approveButton.textContent = "USDC approved";
     } else {
-      approveButton.textContent = "Approve 10 USDC";
+      approveButton.textContent = "Approve 0.1 USDC";
     }
   } catch (error) {
-    approveButton.textContent = "Approve 10 USDC";
+      approveButton.textContent = "Approve 0.1 USDC";
   }
 }
 
@@ -274,7 +274,7 @@ async function ensureUsdcAllowance() {
     return true;
   }
 
-  log("USDC allowance is low. Approving 10 USDC...");
+  log("USDC allowance is low. Approving 0.1 USDC...");
   const tx = await usdc.approve(contractAddress, MINT_COST);
   log(`Approve tx: ${tx.hash}`);
   await tx.wait();
@@ -387,7 +387,7 @@ async function approveUsdc() {
   const signer = await provider.getSigner();
   const usdc = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
 
-  log(`Approving 10 USDC for ${contractAddress}...`);
+  log(`Approving 0.1 USDC for ${contractAddress}...`);
   const tx = await usdc.approve(contractAddress, MINT_COST);
   log(`Approve tx: ${tx.hash}`);
   await tx.wait();

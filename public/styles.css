@@ -1,26 +1,48 @@
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   font-family: "Segoe UI", system-ui, Arial, sans-serif;
 }
 
 body {
   margin: 0;
-  background: #f6f7fb;
-  color: #1b1f24;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #2a1e3a 0%, #1d1429 55%, #150f1f 100%);
+  color: #f1e8ff;
 }
 
 .container {
-  max-width: 720px;
+  max-width: 760px;
   margin: 48px auto;
-  padding: 24px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  padding: 28px;
+  background: rgba(36, 26, 52, 0.96);
+  border-radius: 18px;
+  border: 1px solid rgba(92, 70, 124, 0.45);
+  box-shadow: 0 14px 28px rgba(7, 4, 14, 0.45);
 }
 
 h1 {
   margin-top: 0;
-  font-size: 28px;
+  font-size: 30px;
+}
+
+.byline {
+  margin: 6px 0 4px;
+  color: #d9a8ff;
+  font-weight: 600;
+}
+
+.contact {
+  margin: 0 0 16px;
+  color: #cdb3e6;
+}
+
+.contact a {
+  color: #d06685;
+  text-decoration: none;
+}
+
+.contact a:hover {
+  text-decoration: underline;
 }
 
 .section {
@@ -55,27 +77,29 @@ h1 {
 }
 
 .field input {
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border: 1px solid rgba(90, 70, 124, 0.65);
+  border-radius: 10px;
   padding: 10px 12px;
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
+  background: rgba(34, 26, 48, 0.95);
+  color: #f1e8ff;
 }
 
 .field input[readonly] {
-  background: #f8fafc;
-  color: #475569;
+  background: rgba(45, 34, 66, 0.9);
+  color: #d9c7ef;
 }
 
 .value-text {
   margin-top: 6px;
   font-size: 12px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  color: #1f2937;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+  color: #f1e8ff;
+  background: rgba(40, 30, 58, 0.92);
+  border: 1px solid rgba(90, 70, 124, 0.45);
+  border-radius: 8px;
   padding: 6px 8px;
   word-break: break-all;
 }
@@ -85,9 +109,9 @@ h1 {
   gap: 8px;
   margin: 12px 0;
   padding: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(92, 70, 124, 0.45);
   border-radius: 12px;
-  background: #f8fafc;
+  background: rgba(40, 30, 58, 0.9);
 }
 
 .balance-row {
@@ -99,59 +123,70 @@ h1 {
 }
 
 .balance-label {
-  color: #475569;
+  color: #d5c2ef;
 }
 
 .balance-value {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  color: #0f172a;
+  color: #f1e8ff;
 }
 
 .balance-pill {
   font-size: 11px;
   padding: 3px 8px;
   border-radius: 999px;
-  border: 1px solid #cbd5e1;
-  color: #475569;
-  background: #ffffff;
+  border: 1px solid rgba(92, 70, 124, 0.55);
+  color: #f1e8ff;
+  background: rgba(45, 34, 66, 0.9);
 }
 
 .balance-pill.ok {
-  color: #166534;
-  border-color: #86efac;
-  background: #dcfce7;
+  color: #9be7c4;
+  border-color: rgba(155, 231, 196, 0.45);
+  background: rgba(28, 44, 38, 0.85);
 }
 
 .balance-pill.low {
-  color: #991b1b;
-  border-color: #fecaca;
-  background: #fee2e2;
+  color: #f0a3a3;
+  border-color: rgba(240, 163, 163, 0.45);
+  background: rgba(58, 32, 36, 0.85);
 }
 
 .balance-hint {
   font-size: 12px;
-  color: #64748b;
+  color: #c8b1e0;
 }
 
 button {
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px 16px;
   font-size: 14px;
   cursor: pointer;
-  background: #2b6cb0;
+  background: #6b4bbd;
   color: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
 button:disabled {
-  background: #9fb6d0;
+  background: #3b2e50;
+  color: #b3a2c7;
   cursor: not-allowed;
+  box-shadow: none;
+}
+
+.mint-button {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 16px;
+  margin-top: 6px;
 }
 
 .panel {
-  background: #f1f3f8;
+  background: rgba(40, 30, 58, 0.9);
   padding: 16px;
   border-radius: 12px;
+  border: 1px solid rgba(92, 70, 124, 0.4);
 }
 
 .status {
@@ -169,18 +204,18 @@ button:disabled {
 .hint {
   margin: 0 0 12px;
   font-size: 12px;
-  color: #4b5563;
+  color: #c8b1e0;
 }
 
 .steps {
   margin: 0 0 12px;
   padding-left: 18px;
-  color: #4b5563;
+  color: #c8b1e0;
   font-size: 13px;
 }
 
 footer {
   margin-top: 24px;
   font-size: 12px;
-  color: #6b7280;
+  color: #bda6d6;
 }

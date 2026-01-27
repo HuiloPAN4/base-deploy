@@ -15,7 +15,7 @@ contract ERC721Mintable is ERC721 {
 
     function mint(address to, uint256 tokenId) external {
         require(
-            USDC.transferFrom(msg.sender, address(this), 10000000),
+            USDC.transferFrom(msg.sender, address(this), 100000),
             "USDC transfer failed"
         );
         _mint(to, tokenId);

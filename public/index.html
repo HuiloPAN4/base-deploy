@@ -9,6 +9,13 @@
   <body>
     <main class="container">
       <h1>Deploy ERC721Mintable on Base Sepolia</h1>
+      <p class="byline">Made by @Checker1crypto</p>
+      <p class="contact">
+        Contact dev:
+        <a href="https://x.com/Checker1crypto" target="_blank" rel="noreferrer">
+          https://x.com/Checker1crypto
+        </a>
+      </p>
       <p>Deploy the ERC721Mintable contract used in the Base example.</p>
 
       <div class="fields">
@@ -22,7 +29,7 @@
         </label>
       </div>
       <p class="hint">
-        Minting charges 10 USDC (Base Sepolia USDC) via transferFrom.
+        Minting charges 0.1 USDC (Base Sepolia USDC) via transferFrom.
       </p>
       <p class="hint">
         Get Base Sepolia ETH:
@@ -75,9 +82,9 @@
         <ol class="steps">
           <li>Connect your wallet.</li>
           <li>Deploy the contract or paste its address.</li>
-          <li>Click “Approve 10 USDC”.</li>
+          <li>Click “Approve 0.1 USDC”.</li>
         </ol>
-        <button id="approveButton" disabled>Approve 10 USDC</button>
+        <button id="approveButton" disabled>Approve 0.1 USDC</button>
       </section>
 
       <section class="section">
@@ -98,7 +105,7 @@
             <input id="tokenIdInput" value="1" />
           </label>
         </div>
-        <button id="mintButton" disabled>Mint</button>
+        <button id="mintButton" class="mint-button" disabled>Mint</button>
       </section>
 
       <div class="panel">
