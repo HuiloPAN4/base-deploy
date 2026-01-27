@@ -38,6 +38,10 @@ h1 {
   margin: 20px 0;
 }
 
+.actions.secondary {
+  margin-top: 8px;
+}
+
 .fields {
   display: grid;
   gap: 12px;
@@ -74,6 +78,59 @@ h1 {
   border-radius: 6px;
   padding: 6px 8px;
   word-break: break-all;
+}
+
+.balances {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.balance-row {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.balance-label {
+  color: #475569;
+}
+
+.balance-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #0f172a;
+}
+
+.balance-pill {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  background: #ffffff;
+}
+
+.balance-pill.ok {
+  color: #166534;
+  border-color: #86efac;
+  background: #dcfce7;
+}
+
+.balance-pill.low {
+  color: #991b1b;
+  border-color: #fecaca;
+  background: #fee2e2;
+}
+
+.balance-hint {
+  font-size: 12px;
+  color: #64748b;
 }
 
 button {

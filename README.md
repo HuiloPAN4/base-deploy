@@ -32,6 +32,11 @@ to deploy the ERC721Mintable contract with MetaMask on Base Sepolia.
 4. Open `http://localhost:5173` and click "Connect wallet", then "Deploy contract".
 5. Paste or confirm the contract address, click "Approve 10 USDC", then "Mint".
 
+## Faucets (Base Sepolia)
+
+- Get test ETH: https://www.alchemy.com/faucets/base-sepolia
+- Get test USDC: https://faucet.circle.com/
+
 ## Approve USDC (CLI)
 
 The contract charges 10 USDC on mint. Approve once per wallet:

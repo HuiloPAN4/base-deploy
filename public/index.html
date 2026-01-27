@@ -24,10 +24,36 @@
       <p class="hint">
         Minting charges 10 USDC (Base Sepolia USDC) via transferFrom.
       </p>
+      <p class="hint">
+        Get Base Sepolia ETH:
+        <a href="https://www.alchemy.com/faucets/base-sepolia" target="_blank" rel="noreferrer">Alchemy faucet</a>.
+        Get test USDC:
+        <a href="https://faucet.circle.com/" target="_blank" rel="noreferrer">Circle faucet</a>.
+      </p>
 
       <div class="actions">
         <button id="connectButton">Connect wallet</button>
         <button id="deployButton" disabled>Deploy contract</button>
+      </div>
+
+      <div class="balances">
+        <div class="balance-row">
+          <span class="balance-label">ETH balance</span>
+          <span id="ethBalanceValue" class="balance-value">—</span>
+          <span id="ethBalanceStatus" class="balance-pill">—</span>
+        </div>
+        <div class="balance-row">
+          <span class="balance-label">USDC balance</span>
+          <span id="usdcBalanceValue" class="balance-value">—</span>
+          <span id="usdcBalanceStatus" class="balance-pill">—</span>
+        </div>
+        <div id="balanceHint" class="balance-hint">
+          Connect wallet to check balances.
+        </div>
+      </div>
+
+      <div class="actions secondary">
+        <button id="refreshButton" disabled>Refresh balances</button>
       </div>
 
       <section class="section">
