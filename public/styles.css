@@ -6,18 +6,18 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at top, #2a1e3a 0%, #1d1429 55%, #150f1f 100%);
-  color: #f1e8ff;
+  background: radial-gradient(circle at top, #0f1b3a 0%, #0b1220 55%, #090d16 100%);
+  color: #f4f7ff;
 }
 
 .container {
   max-width: 760px;
   margin: 48px auto;
   padding: 28px;
-  background: rgba(36, 26, 52, 0.96);
+  background: rgba(12, 20, 38, 0.96);
   border-radius: 18px;
-  border: 1px solid rgba(92, 70, 124, 0.45);
-  box-shadow: 0 14px 28px rgba(7, 4, 14, 0.45);
+  border: 1px solid rgba(0, 82, 255, 0.24);
+  box-shadow: 0 18px 40px rgba(0, 26, 96, 0.35);
 }
 
 h1 {
@@ -27,17 +27,17 @@ h1 {
 
 .byline {
   margin: 6px 0 4px;
-  color: #d9a8ff;
+  color: #7db4ff;
   font-weight: 600;
 }
 
 .contact {
   margin: 0 0 16px;
-  color: #cdb3e6;
+  color: #b2c6f4;
 }
 
 .contact a {
-  color: #d06685;
+  color: #5aa2ff;
   text-decoration: none;
 }
 
@@ -77,28 +77,33 @@ h1 {
 }
 
 .field input {
-  border: 1px solid rgba(90, 70, 124, 0.65);
+  border: 1px solid rgba(57, 79, 128, 0.75);
   border-radius: 10px;
   padding: 10px 12px;
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
-  background: rgba(34, 26, 48, 0.95);
-  color: #f1e8ff;
+  background: rgba(8, 14, 26, 0.95);
+  color: #f4f7ff;
+}
+
+.field input:focus {
+  outline: 2px solid rgba(0, 82, 255, 0.45);
+  outline-offset: 1px;
 }
 
 .field input[readonly] {
-  background: rgba(45, 34, 66, 0.9);
-  color: #d9c7ef;
+  background: rgba(13, 21, 36, 0.9);
+  color: #c9d6f2;
 }
 
 .value-text {
   margin-top: 6px;
   font-size: 12px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  color: #f1e8ff;
-  background: rgba(40, 30, 58, 0.92);
-  border: 1px solid rgba(90, 70, 124, 0.45);
+  color: #eef3ff;
+  background: rgba(10, 18, 32, 0.92);
+  border: 1px solid rgba(50, 71, 120, 0.5);
   border-radius: 8px;
   padding: 6px 8px;
   word-break: break-all;
@@ -109,9 +114,9 @@ h1 {
   gap: 8px;
   margin: 12px 0;
   padding: 12px;
-  border: 1px solid rgba(92, 70, 124, 0.45);
+  border: 1px solid rgba(50, 71, 120, 0.45);
   border-radius: 12px;
-  background: rgba(40, 30, 58, 0.9);
+  background: rgba(10, 18, 32, 0.9);
 }
 
 .balance-row {
@@ -123,21 +128,21 @@ h1 {
 }
 
 .balance-label {
-  color: #d5c2ef;
+  color: #b5c7ef;
 }
 
 .balance-value {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  color: #f1e8ff;
+  color: #f4f7ff;
 }
 
 .balance-pill {
   font-size: 11px;
   padding: 3px 8px;
   border-radius: 999px;
-  border: 1px solid rgba(92, 70, 124, 0.55);
-  color: #f1e8ff;
-  background: rgba(45, 34, 66, 0.9);
+  border: 1px solid rgba(57, 79, 128, 0.6);
+  color: #f4f7ff;
+  background: rgba(13, 21, 36, 0.9);
 }
 
 .balance-pill.ok {
@@ -154,7 +159,7 @@ h1 {
 
 .balance-hint {
   font-size: 12px;
-  color: #c8b1e0;
+  color: #a7b4d1;
 }
 
 button {
@@ -163,14 +168,25 @@ button {
   padding: 10px 16px;
   font-size: 14px;
   cursor: pointer;
-  background: #6b4bbd;
+  background: #0052ff;
   color: #ffffff;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 18px rgba(0, 40, 140, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+button:hover {
+  background: #1a63ff;
+  box-shadow: 0 12px 22px rgba(0, 40, 140, 0.45);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 button:disabled {
-  background: #3b2e50;
-  color: #b3a2c7;
+  background: #1a2540;
+  color: #94a2c3;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -183,10 +199,10 @@ button:disabled {
 }
 
 .panel {
-  background: rgba(40, 30, 58, 0.9);
+  background: rgba(10, 18, 32, 0.9);
   padding: 16px;
   border-radius: 12px;
-  border: 1px solid rgba(92, 70, 124, 0.4);
+  border: 1px solid rgba(50, 71, 120, 0.45);
 }
 
 .status {
@@ -204,18 +220,18 @@ button:disabled {
 .hint {
   margin: 0 0 12px;
   font-size: 12px;
-  color: #c8b1e0;
+  color: #a7b4d1;
 }
 
 .steps {
   margin: 0 0 12px;
   padding-left: 18px;
-  color: #c8b1e0;
+  color: #a7b4d1;
   font-size: 13px;
 }
 
 footer {
   margin-top: 24px;
   font-size: 12px;
-  color: #bda6d6;
+  color: #9fb1d6;
 }
