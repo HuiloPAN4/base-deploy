@@ -1,0 +1,21 @@
+{
+  "name": "base-deploy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "compile": "node scripts/compile.js",
+    "dev": "http-server public -p 5173",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "solc": "^0.8.30"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
