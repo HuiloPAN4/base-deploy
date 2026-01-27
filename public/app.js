@@ -9,8 +9,11 @@ const contractAddressInput = document.getElementById("contractAddressInput");
 const contractAddressValue = document.getElementById("contractAddressValue");
 const ethBalanceValue = document.getElementById("ethBalanceValue");
 const ethBalanceStatus = document.getElementById("ethBalanceStatus");
+const usdcBalanceValue = document.getElementById("usdcBalanceValue");
+const usdcBalanceStatus = document.getElementById("usdcBalanceStatus");
 const balanceHint = document.getElementById("balanceHint");
 const refreshButton = document.getElementById("refreshButton");
+const approveButton = document.getElementById("approveButton");
 const mintButton = document.getElementById("mintButton");
 const mintToInput = document.getElementById("mintToInput");
 const recipientValue = document.getElementById("recipientValue");
@@ -18,19 +21,27 @@ const tokenIdInput = document.getElementById("tokenIdInput");
 const statusEl = document.getElementById("status");
 const logEl = document.getElementById("log");
 
-const BASE_CHAIN_ID = "0x2105";
-const EXPLORER_BASE_URL = "https://basescan.org";
-const MIN_GAS_WEI = ethers.parseEther("0.0001");
+const BASE_SEPOLIA_CHAIN_ID = "0x14a34";
+const EXPLORER_BASE_URL = "https://sepolia.basescan.org";
+const USDC_ADDRESS = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+const MINT_COST = 100000n;
+const ERC20_ABI = [
+  "function approve(address spender, uint256 amount) external returns (bool)",
+  "function allowance(address owner, address spender) external view returns (uint256)",
+  "function balanceOf(address owner) external view returns (uint256)",
+  "function decimals() external view returns (uint8)",
+];
+const MIN_GAS_WEI = ethers.parseEther("0.001");
 
-const BASE_MAINNET_PARAMS = {
-  chainId: BASE_CHAIN_ID,
-  chainName: "Base",
+const BASE_SEPOLIA_PARAMS = {
+  chainId: BASE_SEPOLIA_CHAIN_ID,
+  chainName: "Base Sepolia",
   nativeCurrency: {
-    name: "Ether",
+    name: "Sepolia ETH",
     symbol: "ETH",
     decimals: 18,
   },
-  rpcUrls: ["https://mainnet.base.org"],
+  rpcUrls: ["https://sepolia.base.org"],
   blockExplorerUrls: [EXPLORER_BASE_URL],
 };
 
@@ -38,6 +49,8 @@ const state = {
   connected: false,
   deployedAddress: null,
   walletAddress: null,
+  usdcAllowance: null,
+  usdcDecimals: null,
 };
 
 function setStatus(message) {
@@ -91,6 +104,7 @@ function updateActionState() {
     addressValue && ethers.isAddress(addressValue.trim());
   const enabled = hasValidAddress;
 
+  approveButton.disabled = !enabled;
   mintButton.disabled = !enabled;
   refreshButton.disabled = !state.connected;
 }
@@ -149,6 +163,39 @@ function getMintDetails() {
   return { to, tokenId };
 }
 
+async function refreshAllowance() {
+  if (!state.connected || !state.walletAddress) {
+    approveButton.textContent = "Approve 0.1 USDC";
+    return;
+  }
+
+  const contractAddress =
+    state.deployedAddress || contractAddressInput.value.trim();
+  if (!contractAddress || !ethers.isAddress(contractAddress)) {
+    approveButton.textContent = "Approve 0.1 USDC";
+    return;
+  }
+
+  try {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const usdc = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
+    const allowance = await usdc.allowance(
+      state.walletAddress,
+      contractAddress
+    );
+    state.usdcAllowance = allowance;
+
+    if (allowance >= MINT_COST) {
+      approveButton.textContent = "USDC approved";
+    } else {
+      approveButton.textContent = "Approve 0.1 USDC";
+    }
+  } catch (error) {
+      approveButton.textContent = "Approve 0.1 USDC";
+  }
+}
+
 function setBalanceStatus(element, status, label) {
   element.textContent = label;
   element.classList.remove("ok", "low");
@@ -161,7 +208,9 @@ async function refreshBalances() {
   if (!state.connected) {
     balanceHint.textContent = "Connect wallet to check balances.";
     setBalanceStatus(ethBalanceStatus, null, "—");
+    setBalanceStatus(usdcBalanceStatus, null, "—");
     ethBalanceValue.textContent = "—";
+    usdcBalanceValue.textContent = "—";
     return;
   }
 
@@ -170,11 +219,21 @@ async function refreshBalances() {
   const address = await signer.getAddress();
   state.walletAddress = address;
 
-  const ethBalance = await provider.getBalance(address);
+  const usdc = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
+  if (!state.usdcDecimals) {
+    state.usdcDecimals = Number(await usdc.decimals());
+  }
+
+  const [ethBalance, usdcBalance] = await Promise.all([
+    provider.getBalance(address),
+    usdc.balanceOf(address),
+  ]);
 
   const ethFormatted = ethers.formatEther(ethBalance);
+  const usdcFormatted = ethers.formatUnits(usdcBalance, state.usdcDecimals);
 
   ethBalanceValue.textContent = `${ethFormatted} ETH`;
+  usdcBalanceValue.textContent = `${usdcFormatted} USDC`;
 
   if (ethBalance >= MIN_GAS_WEI) {
     setBalanceStatus(ethBalanceStatus, "ok", "OK");
@@ -182,12 +241,46 @@ async function refreshBalances() {
     setBalanceStatus(ethBalanceStatus, "low", "LOW");
   }
 
+  if (usdcBalance >= MINT_COST) {
+    setBalanceStatus(usdcBalanceStatus, "ok", "OK");
+  } else {
+    setBalanceStatus(usdcBalanceStatus, "low", "LOW");
+  }
+
   const hints = [];
   if (ethBalance < MIN_GAS_WEI) {
     hints.push("Not enough ETH for gas.");
   }
+  if (usdcBalance < MINT_COST) {
+    hints.push("Not enough USDC to mint.");
+  }
   balanceHint.textContent =
     hints.length > 0 ? hints.join(" ") : "Balances look sufficient.";
+}
+
+async function ensureUsdcAllowance() {
+  if (!state.connected) {
+    await connectWallet();
+  }
+
+  const contractAddress = getContractAddress();
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+  const usdc = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
+
+  const allowance = await usdc.allowance(state.walletAddress, contractAddress);
+  if (allowance >= MINT_COST) {
+    state.usdcAllowance = allowance;
+    return true;
+  }
+
+  log("USDC allowance is low. Approving 0.1 USDC...");
+  const tx = await usdc.approve(contractAddress, MINT_COST);
+  log(`Approve tx: ${tx.hash}`);
+  await tx.wait();
+  log("USDC approved.");
+  await refreshAllowance();
+  return true;
 }
 
 async function requireWallet() {
@@ -196,22 +289,22 @@ async function requireWallet() {
   }
 }
 
-async function ensureBaseMainnet() {
+async function ensureBaseSepolia() {
   const currentChain = await window.ethereum.request({ method: "eth_chainId" });
-  if (currentChain === BASE_CHAIN_ID) {
+  if (currentChain === BASE_SEPOLIA_CHAIN_ID) {
     return;
   }
 
   try {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: BASE_CHAIN_ID }],
+      params: [{ chainId: BASE_SEPOLIA_CHAIN_ID }],
     });
   } catch (error) {
     if (error.code === 4902) {
       await window.ethereum.request({
         method: "wallet_addEthereumChain",
-        params: [BASE_MAINNET_PARAMS],
+        params: [BASE_SEPOLIA_PARAMS],
       });
     } else {
       throw error;
@@ -223,7 +316,7 @@ async function connectWallet() {
   setStatus("connecting wallet...");
   await requireWallet();
   await window.ethereum.request({ method: "eth_requestAccounts" });
-  await ensureBaseMainnet();
+  await ensureBaseSepolia();
 
   const provider = new ethers.BrowserProvider(window.ethereum);
   const signer = await provider.getSigner();
@@ -238,6 +331,7 @@ async function connectWallet() {
   setRecipient(address);
 
   updateActionState();
+  await refreshAllowance();
   await refreshBalances();
 }
 
@@ -276,7 +370,31 @@ async function deployContract() {
   setStatus("deployed");
   deployButton.disabled = false;
   updateActionState();
+  await refreshAllowance();
   await refreshBalances();
+}
+
+async function approveUsdc() {
+  setStatus("approving USDC...");
+  approveButton.disabled = true;
+
+  if (!state.connected) {
+    await connectWallet();
+  }
+
+  const contractAddress = getContractAddress();
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+  const usdc = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
+
+  log(`Approving 0.1 USDC for ${contractAddress}...`);
+  const tx = await usdc.approve(contractAddress, MINT_COST);
+  log(`Approve tx: ${tx.hash}`);
+  await tx.wait();
+  log("USDC approved.");
+  setStatus("approved");
+  await refreshAllowance();
+  updateActionState();
 }
 
 async function mintToken() {
@@ -288,6 +406,7 @@ async function mintToken() {
   }
 
   const contractAddress = getContractAddress();
+  await ensureUsdcAllowance();
   const { to, tokenId } = getMintDetails();
   const provider = new ethers.BrowserProvider(window.ethereum);
   const signer = await provider.getSigner();
@@ -318,6 +437,10 @@ deployButton.addEventListener("click", () =>
   deployContract().catch(handleError)
 );
 
+approveButton.addEventListener("click", () =>
+  approveUsdc().catch(handleError)
+);
+
 mintButton.addEventListener("click", () => mintToken().catch(handleError));
 refreshButton.addEventListener("click", () =>
   refreshBalances().catch(handleError)
@@ -326,4 +449,5 @@ refreshButton.addEventListener("click", () =>
 setStatus("idle");
 loadFromStorage();
 updateActionState();
+refreshAllowance().catch(() => {});
 refreshBalances().catch(() => {});

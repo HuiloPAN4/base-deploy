@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "node scripts/compile.js",
-    "dev": "http-server public -p 5174",
+    "dev": "http-server public -p 5173",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

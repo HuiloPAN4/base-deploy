@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Base Mainnet Deploy</title>
+    <title>Base Sepolia Deploy</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="container">
-      <h1>Deploy ERC721Mintable on Base Mainnet</h1>
+      <h1>Deploy ERC721Mintable on Base Sepolia</h1>
       <p class="byline">Made by @Checker1crypto</p>
       <p class="contact">
         Contact dev:
@@ -29,7 +29,13 @@
         </label>
       </div>
       <p class="hint">
-        Minting is free; you only pay gas in ETH on Base Mainnet.
+        Minting charges 0.1 USDC (Base Sepolia USDC) via transferFrom.
+      </p>
+      <p class="hint">
+        Get Base Sepolia ETH:
+        <a href="https://www.alchemy.com/faucets/base-sepolia" target="_blank" rel="noreferrer">Alchemy faucet</a>.
+        Get test USDC:
+        <a href="https://faucet.circle.com/" target="_blank" rel="noreferrer">Circle faucet</a>.
       </p>
 
       <div class="actions">
@@ -42,6 +48,11 @@
           <span class="balance-label">ETH balance</span>
           <span id="ethBalanceValue" class="balance-value">—</span>
           <span id="ethBalanceStatus" class="balance-pill">—</span>
+        </div>
+        <div class="balance-row">
+          <span class="balance-label">USDC balance</span>
+          <span id="usdcBalanceValue" class="balance-value">—</span>
+          <span id="usdcBalanceStatus" class="balance-pill">—</span>
         </div>
         <div id="balanceHint" class="balance-hint">
           Connect wallet to check balances.
@@ -64,6 +75,16 @@
           />
         </label>
         <div id="contractAddressValue" class="value-text">—</div>
+      </section>
+
+      <section class="section">
+        <h2>Approve USDC</h2>
+        <ol class="steps">
+          <li>Connect your wallet.</li>
+          <li>Deploy the contract or paste its address.</li>
+          <li>Click “Approve 0.1 USDC”.</li>
+        </ol>
+        <button id="approveButton" disabled>Approve 0.1 USDC</button>
       </section>
 
       <section class="section">
@@ -93,7 +114,7 @@
       </div>
 
       <footer>
-        <span>Network: Base Mainnet</span>
+        <span>Network: Base Sepolia</span>
       </footer>
     </main>
 
